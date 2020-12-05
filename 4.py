@@ -13,3 +13,4 @@ required = {
 data = [{(t := d.split(":"))[0]: t[1] for d in p.split() if d} for p in stdin.read().replace("\n", " ").split("  ") if p]
 print(sum(1 for d in data if all(r in d for r in required)))
 
+print(sum(1 for d in data if all(r in d and (m := re.fullmatch(v[0], d[r])) and v[1](*m.groups()) for r, v in required.items())))
