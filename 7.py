@@ -2,16 +2,14 @@ import re
 from itertools import groupby
 from sys import stdin
 
-data = [[re.match("\w* \w*", l).group(), i, n] for l in stdin.read().split("\n") for n, i in re.findall("(\d) (\w* \w*)", l)]
-print(data)
-grouped = {g: l for g, d in groupby(data, lambda x: x[1]) if len(l := list(d))}
-print(grouped)
+data = [[i, re.match("\w* \w*", l).group()] for l in stdin.read().split("\n") for i in re.findall("\d (\w* \w*)", l)]
+grouped = {g: list(d) for g, d in groupby(sorted(data, key=lambda x: x[0]), lambda x: x[0])}
 
 visited = set()
-que = [i[0] for i in grouped.get("shiny gold", [])]
+que = [i[1] for i in grouped["shiny gold"]]
 while que:
     v = que.pop()
     if v not in visited:
         visited.add(v)
-        que.extend(i[0] for i in grouped.get(v, []))
-print(visited)
+        que.extend(i[1] for i in grouped.get(v, []))
+print(len(visited))
