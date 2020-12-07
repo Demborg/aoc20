@@ -3,8 +3,7 @@ from itertools import groupby
 from sys import stdin
 
 data = [[*i, re.match("\w* \w*", l).group()] for l in stdin.read().split("\n") for i in re.findall("(\d) (\w* \w*)", l)]
-back = {g: list(d) for g, d in groupby(sorted(data, key=lambda x: x[1]), lambda x: x[1])}
-forward = {g: list(d) for g, d in groupby(sorted(data, key=lambda x: x[2]), lambda x: x[2])}
+back, forward = ({g: list(d) for g, d in groupby(sorted(data, key=k), k)} for k in (lambda x: x[i] for i in (1, 2)))
 
 visited = set()
 que = [i[2] for i in back["shiny gold"]]
