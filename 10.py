@@ -1,6 +1,6 @@
+from math import prod
 from sys import stdin
 
-data = [int(l) for l in stdin.read().split("\n") if l]
-data = [0, *sorted(data), 3+max(data)]
-diffs = [b - a for a, b in zip(data, data[1:])]
-print(sum(d == 1 for d in diffs) * sum(d == 3 for d in diffs))
+data = sorted([int(l) for l in stdin.read().split("\n") if l])
+diffs = lambda l: (b - a for a, b in zip([0, *l], [*l, data[-1] + 3]))
+print(prod(sum(d == i for d in diffs(data)) for i in (1, 3)))
