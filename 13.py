@@ -2,12 +2,13 @@ from itertools import count
 from sys import stdin
 
 t = int(stdin.readline())
-bs = [None if b == "x" else int(b) for b in stdin.readline().split(",")]
-print(min(((w := b - t % b), b * w) for b in bs if b))
+bs = sorted([(int(b), i) for i, b in enumerate(stdin.readline().split(",")) if b != "x"])
+print(min(((w := b - t % b), b * w) for b, _ in bs))
 
 def iter(i=0):
-    if i >= len(bs):
-        yield from count()
-    yield from (t for t in iter(i + 1) if bs[i] is None or (t + i) % bs[i] == 0) 
+    b, j = bs[i]
+    if i == len(bs) - 1:
+        yield from count(b - j, b)
+    yield from (t for t in iter(i + 1) if (t + j) % b == 0) 
 
 print(next(iter()))
