@@ -1,11 +1,12 @@
 import re
 from sys import stdin
 
+between = lambda l, h: lambda x: l <= int(x) <= h
 required = {
-    "byr": ("(\d{4})", lambda x: 1920 <= int(x) <= 2002),
-    "iyr": ("(\d{4})", lambda x: 2010 <= int(x) <= 2020),
-    "eyr": ("(\d{4})", lambda x: 2020 <= int(x) <= 2030),
-    "hgt": ("(\d*)(in|cm)", lambda x, m: (150 if (t := m == "cm") else 59) <= int(x) <= (193 if t else 76)),
+    "byr": ("(\d{4})", between(1920, 2002)),
+    "iyr": ("(\d{4})", between(2010, 2020)),
+    "eyr": ("(\d{4})", between(2020, 2030)),
+    "hgt": ("(\d*)(in|cm)", lambda x, m: between(*((150, 193) if m =="cm" else (59, 76)))(x)),
     "hcl": ("#[\da-f]{6}", lambda: True),
     "ecl": ("amb|blu|brn|gry|grn|hzl|oth", lambda: True),
     "pid": ("\d{9}", lambda: True)
